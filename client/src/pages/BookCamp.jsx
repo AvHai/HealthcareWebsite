@@ -21,7 +21,7 @@ import Footer from "@/components/Footer"
 
 const BookCamp = () => {
   const [searchParams] = useSearchParams()
-  const { toast } = useToast()
+  //const { toast } = useToast()
   const campId = searchParams.get("campId") || "1"
 
   // Mock camp data - in real app, this would come from database
@@ -75,10 +75,10 @@ const BookCamp = () => {
         .toString()
         .slice(-6)}`
 
-      toast({
-        title: "Booking Confirmed!",
-        description: `Your booking number is ${bookingNumber}. Please save this for your records.`
-      })
+      // toast({
+      //   title: "Booking Confirmed!",
+      //   description: `Your booking number is ${bookingNumber}. Please save this for your records.`
+      // })
 
       // Reset form
       setBookingForm({

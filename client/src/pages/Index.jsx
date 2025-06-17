@@ -2,8 +2,7 @@ import { useState } from "react"
 import Navigation from "@/components/Navigation"
 import Hero from "@/components/Hero"
 import ChatBot from "@/components/ChatBot"
-import MedicalCampsDashboard from "@/components/Camps"
-import CommunityHub from "@/components/Community"
+import MedicalCampsDashboard from "@/components/CampsElement"
 import Footer from "@/components/Footer"
 import { Button } from "@/components/ui/button"
 import { MessageCircle, Phone } from "lucide-react"
@@ -19,7 +18,6 @@ const Index = () => {
       {/* Main Content Sections */}
       <main className="space-y-16 py-16">
          <MedicalCampsDashboard />
-        {/* <CommunityHub />  */}
       </main>
 
       <Footer />

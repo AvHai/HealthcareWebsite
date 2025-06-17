@@ -109,7 +109,7 @@ const MedicalCampsDashboard = () => {
   }
 
   return (
-    <section id="camps" className="px-4 py-16 sm:px-6 lg:px-8 bg-gray-50 h-screen">
+    <section id="camps" className="px-2 py-2 sm:px-6 lg:px-8 bg-gray-50 min-h-screen pb-32">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -150,11 +150,11 @@ const MedicalCampsDashboard = () => {
         </div>
 
         {/* Medical Camps Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCamps.map(camp => (
             <Card
               key={camp.id}
-              className="hover:shadow-lg transition-shadow duration-300 border-0 shadow-md"
+              className="hover:shadow-lg transition-shadow duration-300 border-0 shadow-md min-w-0"
             >
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
@@ -177,7 +177,7 @@ const MedicalCampsDashboard = () => {
 
               <CardContent className="space-y-4">
                 {/* Date and Time */}
-                <div className="flex items-center space-x-4 text-sm">
+                <div className="flex flex-wrap items-center space-x-4 text-sm">
                   <div className="flex items-center text-gray-600">
                     <Calendar className="w-4 h-4 mr-1" />
                     {new Date(camp.date).toLocaleDateString("en-IN", {

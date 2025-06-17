@@ -13,10 +13,10 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navItems = [
-    { name: "Home", href: "#home", icon: HeartHandshake },
-    { name: "Medical Camps", href: "#camps", icon: MapPin },
-    { name: "Community", href: "#community", icon: Users },
-    { name: "AI Assistant", href: "#chat", icon: MessageCircle }
+    { name: "Home", href: "/", icon: HeartHandshake },
+    { name: "Medical Camps", href: "book-camp", icon: MapPin },
+    { name: "Community", href: "community", icon: Users },
+    { name: "AI Assistant", href: "chat", icon: MessageCircle }
   ]
 
   return (
