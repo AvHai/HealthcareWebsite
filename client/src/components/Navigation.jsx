@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button"
 import {
   Menu,
@@ -16,7 +17,7 @@ const Navigation = () => {
     { name: "Home", href: "/", icon: HeartHandshake },
     { name: "Medical Camps", href: "book-camp", icon: MapPin },
     { name: "Community", href: "community", icon: Users },
-    { name: "AI Assistant", href: "chat", icon: MessageCircle }
+    { name: "AI Assistant", href: "chat", icon: MessageCircle },
   ]
 
   return (
@@ -25,7 +26,7 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <HeartHandshake className="w-8 h-8 text-blue-600" />
+            <HeartHandshake className="w-8 h-8 text-blue-600 " />
             <span className="text-2xl font-bold text-blue-900">CareLink</span>
           </div>
 
@@ -42,7 +43,10 @@ const Navigation = () => {
               </a>
             ))}
             <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6">
-              Find Help Now
+              <NavLink to="/login">
+                Login
+               </NavLink>
+              
             </Button>
           </div>
 
@@ -80,7 +84,7 @@ const Navigation = () => {
               ))}
               <div className="px-3 pt-2">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                  Find Help Now
+                  Login
                 </Button>
               </div>
             </div>

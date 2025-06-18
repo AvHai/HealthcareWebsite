@@ -10,6 +10,8 @@ import BookCamp from "./pages/bookCamp"
 import NotFound from "./pages/NotFound"
 import CommunityPage from "./pages/CommunityPage"
 import MedicalCamp from "./pages/MedicalCamp"
+import LoginPage from "./components/LoginPage"
+import ChatbotPage from "./pages/Chatbotpage"
 
 const queryClient = new QueryClient()
 
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/book-camp" element={<MedicalCamp/>} />
           <Route path="/community" element={<CommunityPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/chat" element={<ChatbotPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
