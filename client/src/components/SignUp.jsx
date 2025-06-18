@@ -2,11 +2,13 @@ import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Heart, Eye, EyeOff } from "lucide-react"
-import { toast } from "@/hooks/use-toast"
+import { HeartHandshake, Eye, EyeOff } from "lucide-react"
+import { Link, useNavigate } from "react-router-dom"
+//import { toast } from "@/hooks/use-toast"
 
 const SignUpPage = ({ onPageChange, onLogin }) => {
   const [userType, setUserType] = useState("patient")
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [formData, setFormData] = useState({
@@ -65,7 +67,9 @@ const SignUpPage = ({ onPageChange, onLogin }) => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-green-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Heart className="w-8 h-8 text-white" />
+           <Link to={"/"}>
+           <HeartHandshake className="w-8 h-8 text-white" />
+           </Link> 
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
             Create Your MedMate Account
@@ -240,7 +244,7 @@ const SignUpPage = ({ onPageChange, onLogin }) => {
             <p className="text-gray-600">
               Already have an account?{" "}
               <button
-                onClick={() => onPageChange("login")}
+                onClick={() => navigate("/login")}
                 className="text-blue-600 hover:text-blue-700 font-semibold"
               >
                 Sign in

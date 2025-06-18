@@ -3,10 +3,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { HeartHandshake, Eye, EyeOff } from "lucide-react"
+import { Link, useNavigate } from "react-router-dom"
 //import { toast } from "@/hooks/use-toast"
 
 const LoginPage = ({ onPageChange, onLogin }) => {
   const [userType, setUserType] = useState("patient")
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
@@ -38,7 +40,9 @@ const LoginPage = ({ onPageChange, onLogin }) => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-green-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <HeartHandshake className="w-8 h-8 text-white" />
+            <Link to={"/"}>
+            <HeartHandshake className="w-8 h-8 text-white"/>
+            </Link>
           </div>
           <p className="text-gray-600 mt-2">Sign in to your account</p>
         </div>
@@ -175,7 +179,7 @@ const LoginPage = ({ onPageChange, onLogin }) => {
             <p className="text-gray-600">
               Don't have an account?{" "}
               <button
-                onClick={() => onPageChange("signup")}
+                onClick={() => navigate("/signin")}
                 className="text-blue-600 hover:text-blue-700 font-semibold"
               >
                 Sign up

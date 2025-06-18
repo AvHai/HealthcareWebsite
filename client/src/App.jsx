@@ -12,6 +12,7 @@ import CommunityPage from "./pages/CommunityPage"
 import MedicalCamp from "./pages/MedicalCamp"
 import LoginPage from "./components/LoginPage"
 import ChatbotPage from "./pages/Chatbotpage"
+import SignUpPage from "./components/SignUp"
 
 const queryClient = new QueryClient()
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/chat" element={<ChatbotPage />} />
+          <Route path="/signin"element={<SignUpPage/>}/>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

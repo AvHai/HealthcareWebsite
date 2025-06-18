@@ -45,8 +45,8 @@ const Navigation = () => {
             <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6">
               <NavLink to="/login">
                 Login
-               </NavLink>
-              
+              </NavLink>
+
             </Button>
           </div>
 
@@ -84,7 +84,9 @@ const Navigation = () => {
               ))}
               <div className="px-3 pt-2">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                  Login
+                  <NavLink to="/login">
+                    Login
+                  </NavLink>
                 </Button>
               </div>
             </div>
