@@ -12,7 +12,7 @@ const Hero = () => {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight ">
                 Healthcare for
                 <span className="bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
-                   Everyone, Everywhere
+                   {""} Everyone, Everywhere 
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-lg">
