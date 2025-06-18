@@ -14,11 +14,35 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Navigation />
       <Hero />
-
+      
       {/* Main Content Sections */}
-      <main className="space-y-16 py-16">
+      {/* <main className="space-y-16 py-1">
          <MedicalCampsDashboard />
-      </main>
+      </main> */}
+
+        <div className="my-16 py-10 bg-gradient-to-r from-blue-600 to-green-500">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-4 text-center">
+              <div>
+                <div className="text-4xl font-bold text-white mb-2">24/7</div>
+                <div className="text-blue-100">AI Assistant</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-white mb-2">1000+</div>
+                <div className="text-blue-100">Medical Camps</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-white mb-2">50K+</div>
+                <div className="text-blue-100">Users Helped</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-white mb-2">500+</div>
+                <div className="text-blue-100">Doctors</div>
+              </div>
+            </div>
+          </div>
+      </div>
+
 
       <Footer />
 
@@ -39,6 +63,7 @@ const Index = () => {
           <Phone className="w-6 h-6" />
         </Button>
       </div>
+
 
       {/* AI Chatbot Modal */}
       <ChatBot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />

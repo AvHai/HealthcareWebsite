@@ -3,7 +3,7 @@ import { ArrowRight, Users, MapPin, Stethoscope } from "lucide-react"
 
 const Hero = () => {
   return (
-    <section id="home" className="relative px-4 py-20 sm:px-6 lg:px-8 h-screen">
+    <section id="home" className="relative px-4 py-20 sm:px-6 lg:px-8 ">
       <div className="max-w-7xl mx-auto ">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}
@@ -11,8 +11,8 @@ const Hero = () => {
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight ">
                 Healthcare for
-                <span className="text-blue-700 block">
-                  Everyone, Everywhere
+                <span className="bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
+                   Everyone, Everywhere
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-lg">
@@ -23,8 +23,8 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-blue-700 hover:bg-blue-700 text-white px-8 py-6 text-lg font-medium rounded-lg transition-all duration-300 hover:scale-105">
-                Get Medical Help Now
+              <Button className="bg-gradient-to-r from-blue-600 to-green-500 hover:bg-blue-700 text-white px-8 py-6 text-lg font-medium rounded-lg transition-all duration-300 hover:scale-105">
+                Get Medical Help 
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
               <Button
@@ -35,26 +35,10 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-28">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-blue-700">24/7</div>
-                <div className="text-sm text-gray-700">AI Assistant</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-green-700">1000+</div>
-                <div className="text-sm text-gray-700">Medical Camps</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-purple-700">50K+</div>
-                <div className="text-sm text-gray-700">Users Helped</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-orange-700">500+</div>
-                <div className="text-sm text-gray-700">Doctors</div>
-              </div>
-            </div>
+            
+            
           </div>
+
 
           {/* Right Column - Visual */}
           <div className="relative">
@@ -109,10 +93,34 @@ const Hero = () => {
               <div className="absolute bottom-4 left-4 w-16 h-16 bg-green-200 rounded-full opacity-50"></div>
             </div>
           </div>
+
+          
         </div>
+        
+       
       </div>
+      {/* Stats */}
+       {/* <div className="mt-16 py-16 bg-gradient-to-r from-blue-600 to-green-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-4xl font-bold text-white mb-2">10,000+</div>
+              <div className="text-blue-100">Patients Served</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-white mb-2">500+</div>
+              <div className="text-blue-100">Healthcare Partners</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-white mb-2">50+</div>
+              <div className="text-blue-100">Cities Covered</div>
+            </div>
+          </div>
+        </div>
+        </div> */}
     </section>
   )
 }
 
 export default Hero
+ 
