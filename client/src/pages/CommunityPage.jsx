@@ -6,7 +6,7 @@ const CommunityPage = () => {
   return (
     <div min-h-screen bg-gradient-to-b from-blue-50 to-white>
 
-    <Navigation />
+    <Navigation /> 
 
     <main className="space-y-16 py-16">
         <CommunityHub />
