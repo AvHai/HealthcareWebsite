@@ -4,9 +4,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { HeartHandshake, Eye, EyeOff } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
+import { setUser } from "@/redux/user/user.slice"
+import { useDispatch } from "react-redux"
+import { da } from "date-fns/locale"
 //import { toast } from "@/hooks/use-toast"
 
 const LoginPage = ({ onPageChange, onLogin }) => {
+  const diapatch = useDispatch()
   const [userType, setUserType] = useState("patient")
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
@@ -15,23 +19,31 @@ const LoginPage = ({ onPageChange, onLogin }) => {
     password: ""
   })
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    if (!formData.email || !formData.password) {
-      toast({
-        title: "Error",
-        description: "Please fill in all fields",
-        variant: "destructive"
-      })
-      return
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:4000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          userType
+        })
+      });
+      const data = await response.json();
+     
+      if (!response.ok) {
+        return;
+      }
+
+      diapatch(setUser(data.data.user)); // This sets isLoggedIn: true and user data in redux
+      navigate("/");
+    } catch (err) {
+      // Optionally show error to user
+      // toast({ title: "Error", description: "Something went wrong", variant: "destructive" });
     }
-
-    toast({
-      title: "Success",
-      description: `Welcome back! Logging in as ${userType}`
-    })
-
-    onLogin(userType)
   }
 
   return (
