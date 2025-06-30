@@ -1,24 +1,36 @@
-import React, { useState } from "react"
+import React, { use, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { HeartHandshake, Eye, EyeOff } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
-//import { toast } from "@/hooks/use-toast"
+import {useToast,toast} from "@/hooks/use-toast"
 
-const SignUpPage = ({ onPageChange, onLogin }) => {
+
+// future reference redux : { onPageChange, onLogin }
+const SignUpPage = () => {
   const [userType, setUserType] = useState("patient")
-  const navigate = useNavigate()
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    role: "patient" // initialize with default userType
   })
+  const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  const handleSubmit = e => {
+  // Update userType and formData.role together
+  const handleUserTypeChange = (type) => {
+    setUserType(type)
+    setFormData((prev) => ({
+      ...prev,
+      role: type
+    }))
+  }
+
+  const handleSubmit = async e => {
     e.preventDefault()
 
     if (
@@ -53,12 +65,38 @@ const SignUpPage = ({ onPageChange, onLogin }) => {
       return
     }
 
-    toast({
-      title: "Success",
-      description: `Account created successfully! Welcome to MedMate, ${formData.name}`
-    })
+    try {
+      const response = await fetch("http://localhost:4000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      })
 
-    onLogin(userType)
+      const data = await response.json()
+
+      if (!response.ok) {
+        toast({
+          title: "Error",
+          description: data.message || "Registration failed",
+          variant: "destructive"
+        })
+        return
+      }
+
+      toast({
+        title: "Success",
+        description: `Account created successfully! Welcome to MedMate, ${formData.name}`
+      })
+      navigate("/login")
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive"
+      })
+    }
   }
 
   return (
@@ -90,7 +128,7 @@ const SignUpPage = ({ onPageChange, onLogin }) => {
               <div className="flex rounded-xl bg-gray-100 p-1">
                 <button
                   type="button"
-                  onClick={() => setUserType("patient")}
+                  onClick={() => handleUserTypeChange("patient")}
                   className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
                     userType === "patient"
                       ? "bg-blue-600 text-white shadow-md"
@@ -101,7 +139,7 @@ const SignUpPage = ({ onPageChange, onLogin }) => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setUserType("hospital")}
+                  onClick={() => handleUserTypeChange("hospital")}
                   className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
                     userType === "hospital"
                       ? "bg-green-600 text-white shadow-md"
@@ -157,6 +195,13 @@ const SignUpPage = ({ onPageChange, onLogin }) => {
               />
             </div>
 
+            {/* User Type Display */}
+            <div className="text-sm text-gray-500 mt-1">
+              You are registering as{" "}
+              <span className="font-semibold text-blue-600">
+                {userType === "patient" ? "Patient" : "Hospital"}
+              </span>
+            </div>
             {/* Password Field */}
             <div>
               <Label

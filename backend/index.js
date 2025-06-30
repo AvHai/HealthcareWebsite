@@ -3,13 +3,11 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-
+import AuthRoute from './routes/AuthRoute.js';
 
 dotenv.config({
     path : ".env"
 })
-
-
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -24,7 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-mongoose.connect(process.env.MONGODB_CONN, { dbName: 'gym-website' })
+mongoose.connect(process.env.MONGODB_CONN, { dbName: 'careLink' })
   .then(() => console.log("Database connected"))
   .catch(err => console.error(err));
 
@@ -32,7 +30,7 @@ app.listen(PORT, () => {
   console.log("Server running on port:", PORT);
 });
 
-
+app.use('/api/auth', AuthRoute);
 
 app.use((err, req, res, next) => { 
     console.error(err.stack);
