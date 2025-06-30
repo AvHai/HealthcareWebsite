@@ -29,12 +29,13 @@ export const register = async (req, res) => {
     } catch (error) {
         return handleError(res, 500, 'Registration failed', error);
     }
-}
+}  
 
 export const login = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email })
+      
         if (!user) {    
             return handleError(res, 400, 'Invalid email or password');
         }
