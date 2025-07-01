@@ -6,11 +6,11 @@ import { HeartHandshake, Eye, EyeOff } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { setUser } from "@/redux/user/user.slice"
 import { useDispatch } from "react-redux"
-import { da } from "date-fns/locale"
+
 //import { toast } from "@/hooks/use-toast"
 
 const LoginPage = ({ onPageChange, onLogin }) => {
-  const diapatch = useDispatch()
+  const dispatch = useDispatch()
   const [userType, setUserType] = useState("patient")
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
@@ -37,8 +37,8 @@ const LoginPage = ({ onPageChange, onLogin }) => {
       if (!response.ok) {
         return;
       }
-
-      diapatch(setUser(data.data.user)); // This sets isLoggedIn: true and user data in redux
+      console.log("Login successful:", data);
+      dispatch(setUser(data.data.user)); // This sets isLoggedIn: true and user data in redux
       navigate("/");
     } catch (err) {
       // Optionally show error to user

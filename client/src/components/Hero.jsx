@@ -1,7 +1,18 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Users, MapPin, Stethoscope } from "lucide-react"
+import { useDispatch } from "react-redux";
+import { removeUser } from "@/redux/user/user.slice";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(removeUser());
+    navigate("/login"); // or your login route
+  };
+
   return (
     <section id="home" className="relative px-4 py-20 sm:px-6 lg:px-8 ">
       <div className="max-w-7xl mx-auto ">
@@ -123,4 +134,3 @@ const Hero = () => {
 }
 
 export default Hero
- 
