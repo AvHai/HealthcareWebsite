@@ -4,6 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import AuthRoute from './routes/AuthRoute.js';
+import CommunityInfoRoute from './routes/Communityinfo.routes.js';
 
 dotenv.config({
     path : ".env"
@@ -31,7 +32,7 @@ app.listen(PORT, () => {
 });
 
 app.use('/api/auth', AuthRoute);
-
+app.use('/api/communityinfo', CommunityInfoRoute);
 app.use((err, req, res, next) => { 
     console.error(err.stack);
     const statusCode = err.statusCode || 500;

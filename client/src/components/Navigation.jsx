@@ -9,15 +9,26 @@ import {
   Users,
   MessageCircle
 } from "lucide-react"
+import { useDispatch, useSelector } from "react-redux";
+import { removeUser } from "@/redux/user/user.slice";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+
+  const handleLogout = () => {
+    dispatch(removeUser());
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   const navItems = [
     { name: "Home", href: "/", icon: HeartHandshake },
-    { name: "Medical Camps", href: "book-camp", icon: MapPin },
-    { name: "Community", href: "community", icon: Users },
-    { name: "AI Assistant", href: "chat", icon: MessageCircle },
+    { name: "Medical Camps", href: "/book-camp", icon: MapPin },
+    { name: "Community", href: "/community", icon: Users },
+    { name: "AI Assistant", href: "/chat", icon: MessageCircle },
   ]
 
   return (
@@ -33,21 +44,30 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map(item => (
-              <a
+              <NavLink
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
               >
                 <item.icon className="w-4 h-4" />
                 <span>{item.name}</span>
-              </a>
-            ))}
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6">
-              <NavLink to="/login">
-                Login
               </NavLink>
+            ))}
+            {isLoggedIn ? (
+              <Button
+                className="bg-red-600 hover:bg-red-700 text-white font-medium px-6"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            ) : (
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6">
+                <NavLink to="/login">
+                  Login
+                </NavLink>
 
-            </Button>
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -72,22 +92,34 @@ const Navigation = () => {
           <div className="md:hidden border-t border-blue-100 bg-white/95 backdrop-blur-sm">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navItems.map(item => (
-                <a
+                <NavLink
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   className="flex items-center space-x-2 px-3 py-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-200"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <item.icon className="w-4 h-4" />
                   <span>{item.name}</span>
-                </a>
+                </NavLink>
               ))}
               <div className="px-3 pt-2">
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                  <NavLink to="/login">
-                    Login
-                  </NavLink>
-                </Button>
+                {isLoggedIn ? (
+                  <Button
+                    className="w-full bg-red-600 hover:bg-red-700 text-white"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      handleLogout();
+                    }}
+                  >
+                    Logout
+                  </Button>
+                ) : (
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                    <NavLink to="/login">
+                      Login
+                    </NavLink>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
