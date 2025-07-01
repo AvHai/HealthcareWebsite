@@ -3,9 +3,9 @@ import { handleSuccess } from '../helpers/handleSuccess.js';
 import { handleError } from '../helpers/handleError.js';
 
 export const createCommunityInfo = async (req, res) => {
-    const { title, description, category, videoLink } = req.body;
-    const createdBy = req.user._id; // Assuming req.user is populated with the authenticated user's info
 
+    const { title, description, category, videoLink, createdBy } = req.body;
+    // Use createdBy from body if not using authentication
     try {
         const newCommunityInfo = await CommunityInfo.create({
             title,
@@ -21,12 +21,14 @@ export const createCommunityInfo = async (req, res) => {
 }
 
 export const getCommunityInfo = async (req, res) => {
-    try {
-        const communityInfo = await CommunityInfo.find().populate('createdBy', 'name email');
-        handleSuccess(res, 200, 'Community information retrieved successfully', communityInfo);
-    } catch (error) {
-        return handleError(res, 500, 'Failed to retrieve community information', error);
-    }
+
+  try {
+    const communityInfo = await CommunityInfo.find().populate('createdBy', 'name email');
+    handleSuccess(res, 200, 'Community information retrieved successfully', communityInfo);
+  } catch (error) {
+    return handleError(res, 500, 'Failed to retrieve community information', error);
+  }
+
 }
 
 export const getCommunityInfoById = async (req, res) => {
