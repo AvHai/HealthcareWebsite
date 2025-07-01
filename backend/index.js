@@ -4,6 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import AuthRoute from './routes/AuthRoute.js';
+import userRouter from './routes/UserRoute.js';
 
 dotenv.config({
     path : ".env"
@@ -31,6 +32,26 @@ app.listen(PORT, () => {
 });
 
 app.use('/api/auth', AuthRoute);
+app.use('/api/user', userRouter)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.use((err, req, res, next) => { 
     console.error(err.stack);
