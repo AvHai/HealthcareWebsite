@@ -137,13 +137,16 @@ const CommunityHub = () => {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-3 lg:grid-cols-3 gap-4">
           {filteredPosts.map((post, index) => {
             const videoId = getYouTubeId(post.videoLink);
             const createdById = post.createdBy?._id || post.createdBy?.id;
 
             return (
-              <Card key={index} className="shadow border-0 overflow-hidden">
+              <Card
+                key={index}
+                className="shadow border-0 overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:bg-blue-50/40 w-full max-w-md mx-auto"
+              >
                 <div className="relative">
                   <div className="aspect-video bg-gray-200 flex items-center justify-center relative">
                     {videoId ? (
@@ -172,14 +175,14 @@ const CommunityHub = () => {
                   </div>
                 </div>
 
-                <CardHeader className="pb-1 pt-4 px-4">
-                  <h3 className="text-lg font-semibold line-clamp-2">{post.title}</h3>
-                  <p className="text-gray-600 text-sm line-clamp-2">{post.description}</p>
+                <CardHeader className="pb-1 pt-2 px-2">
+                  <h3 className="text-base font-semibold line-clamp-2">{post.title}</h3>
+                  <p className="text-gray-600 text-xs line-clamp-2">{post.description}</p>
                 </CardHeader>
 
-                <CardContent className="px-4 pb-4 pt-2">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Avatar className="w-8 h-8">
+                <CardContent className="px-2 pb-2 pt-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Avatar className="w-7 h-7">
                       <AvatarFallback className="bg-blue-100 text-blue-600 text-xs">
                         {post.createdBy?.name
                           ? post.createdBy.name.split(" ").map((n) => n[0]).join("")
@@ -187,30 +190,30 @@ const CommunityHub = () => {
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="flex items-center gap-1 text-sm">
+                      <div className="flex items-center gap-1 text-xs">
                         <span>{post.createdBy?.name || "Unknown"}</span>
                       </div>
                       <p className="text-xs text-gray-500">{post.createdBy?.email || ""}</p>
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center text-sm text-gray-500 mb-2">
+                  <div className="flex justify-between items-center text-xs text-gray-500 mb-1">
                     <span>{new Date(post.createdAt).toLocaleString()}</span>
                   </div>
 
                   <div className="flex justify-between items-center">
                     <Button
                       size="sm"
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      className="bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-transform duration-200 text-white px-2 py-1 text-xs"
                       asChild
                     >
                       <a href={post.videoLink} target="_blank" rel="noopener noreferrer">
                         Watch Video
                       </a>
                     </Button>
-                    {user?.id === createdById || user?._id === createdById ? (
+                    {(user?.id === createdById || user?._id === createdById) ? (
                       <Button
-                      className={"bg-red-600 hover:bg-red-700 text-white"}
+                        className="bg-red-600 hover:bg-red-700 text-white px-2 py-1 text-xs"
                         size="sm"
                         variant="destructive"
                         onClick={() => handleDelete(post._id)}
