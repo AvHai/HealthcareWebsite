@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import handleError from '../utils/handleError.js'
+import {handleError} from '../helpers/handleError.js'
 
 
 const isAuth = async (req, res, next) => {

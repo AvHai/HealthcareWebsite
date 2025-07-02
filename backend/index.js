@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import AuthRoute from './routes/AuthRoute.js';
 import userRouter from './routes/UserRoute.js';
 import CommunityInfoRoute from './routes/Communityinfo.routes.js';
+import medicalCampRouter from './routes/MedicalCampRoute.js';
 
 
 dotenv.config({
@@ -36,6 +37,7 @@ app.listen(PORT, () => {
 app.use('/api/auth', AuthRoute);
 app.use('/api/user', userRouter)
 app.use('/api/communityinfo', CommunityInfoRoute);
+app.use('/api/medicalcamp', medicalCampRouter);
 
 app.use((err, req, res, next) => { 
     console.error(err.stack);
