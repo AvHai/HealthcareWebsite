@@ -1,6 +1,6 @@
-import User from '../models/User.js';
-import handleError from '../helper/handleError.js';
-import handleSuccess from '../helper/handleSuccess.js';
+import User from '../models/Users.model.js';
+import {handleError} from '../helpers/handleError.js';
+import {handleSuccess} from '../helpers/handleSuccess.js';
 
 export const getCurrentUser = async (req, res) => {
     try{

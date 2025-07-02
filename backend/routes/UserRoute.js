@@ -1,5 +1,5 @@
 import express from 'express';
-import { getCurrentUser } from '../controllers/Users.controller.js';
+import { getCurrentUser, askAi } from '../controllers/Users.controller.js';
 import isAuth from '../middlewares/auth.middleware.js'
 
 const userRouter = express.Router();
