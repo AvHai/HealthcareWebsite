@@ -17,6 +17,7 @@ const Navigation = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const user = useSelector(state => state.user.user);
 
   const handleLogout = () => {
     dispatch(removeUser());
@@ -24,12 +25,17 @@ const Navigation = () => {
     navigate("/login");
   };
 
+0  // Build navItems, add Admin if hospital
   const navItems = [
     { name: "Home", href: "/", icon: HeartHandshake },
     { name: "Medical Camps", href: "/book-camp", icon: MapPin },
     { name: "Community", href: "/community", icon: Users },
     { name: "AI Assistant", href: "/chat", icon: MessageCircle },
-  ]
+  ];
+
+  if (user?.role === "hospital") {
+    navItems.push({ name: "Admin", href: "/admin", icon: HeartHandshake });
+  }
 
   return (
     <nav className="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-40 border-b border-blue-100">
