@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -23,46 +23,18 @@ import {
 } from "@/components/ui/table"
 import Navigation from "@/components/Navigation"
 import Footer from "@/components/Footer"
-
+import { useSelector } from "react-redux"
+import Loading from "@/components/Loading"
+import{ DeletePopup} from "@/components/deletepopup"
 const AdminDashboard = () => {
-  const [camps, setCamps] = useState([
-    {
-      id: "1",
-      title: "Free General Health Checkup",
-      organizer: "District Health Department",
-      date: "2024-06-20",
-      time: "9:00 AM - 4:00 PM",
-      location: "Community Center, Sector 15",
-      address: "Near Bus Stand, Sector 15, Gurugram",
-      services: [
-        "General Checkup",
-        "Blood Pressure",
-        "Diabetes Screening",
-        "BMI Check"
-      ],
-      capacity: 200,
-      registered: 147,
-      type: "free",
-      status: "active"
-    },
-    {
-      id: "2",
-      title: "COVID-19 Vaccination Drive",
-      organizer: "Primary Health Center",
-      date: "2024-06-22",
-      time: "10:00 AM - 2:00 PM",
-      location: "Government School",
-      address: "Village Panchayat, Block - Sohna",
-      services: ["COVID Vaccine", "Booster Doses", "Health Card Registration"],
-      capacity: 150,
-      registered: 89,
-      type: "vaccination",
-      status: "active"
-    }
-  ])
+  const user = useSelector(state => state.user.user);
+  console.log("main : ",user);
+  
+  const [camps, setCamps] = useState([])
 
   const [showAddForm, setShowAddForm] = useState(false)
-  const [editingCamp, setEditingCamp] = useState(null)
+  // const [editingCamp, setEditingCamp] = useState(null)
+  const [deletePopup, setDeletePopup] = useState({ open: false, id: null, title: "" });
   const [newCamp, setNewCamp] = useState({
     title: "",
     organizer: "",
@@ -72,55 +44,135 @@ const AdminDashboard = () => {
     address: "",
     services: "",
     capacity: "",
-    type: "free"
+    type: "free",
+    applyLink: ""
   })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  
+  useEffect(() => {
+    const fetchCamps = async () => {
+      if (!user || !user.id) return;
+      try {
+        const res = await fetch(`http://localhost:4000/api/medicalcamp?userId=${user.id}`);
+        const data = await res.json();
+        if (res.ok && data.data) {
+          setCamps(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch camps", err);
+      }
+    };
+    fetchCamps();
+  }, [user]);
 
-  const handleAddCamp = () => {
-    const camp = {
-      id: Date.now().toString(),
-      title: newCamp.title,
-      organizer: newCamp.organizer,
-      date: newCamp.date,
-      time: newCamp.time,
-      location: newCamp.location,
-      address: newCamp.address,
-      services: newCamp.services.split(",").map(s => s.trim()),
-      capacity: parseInt(newCamp.capacity),
-      registered: 0,
-      type: newCamp.type,
-      status: "active"
+  const handleAddCamp = async () => {
+    setLoading(true)
+    setError("")
+    if (!user || !user.id) {
+      console.log("hC: ",user);
+      
+      setError("User not found. Please log in again.")
+      setLoading(false)
+      return
     }
+    try {
+      const campData = {
+        title: newCamp.title,
+        organizer: newCamp.organizer,
+        date: newCamp.date,
+        time: newCamp.time,
+        location: newCamp.location,
+        address: newCamp.address,
+        services: newCamp.services.split(",").map(s => s.trim()),
+        capacity: parseInt(newCamp.capacity),
+        campType:
+          newCamp.type === "free"
+            ? "Free Checkup"
+            : newCamp.type === "vaccination"
+            ? "Vaccination"
+            : newCamp.type === "specialist"
+            ? "Specialist"
+            : newCamp.type,
+        applyLink: newCamp.applyLink,
+        userId: user.id 
+      }
 
-    setCamps([...camps, camp])
-    setNewCamp({
-      title: "",
-      organizer: "",
-      date: "",
-      time: "",
-      location: "",
-      address: "",
-      services: "",
-      capacity: "",
-      type: "free"
-    })
-    setShowAddForm(false)
+      const response = await fetch("http://localhost:4000/api/medicalcamp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(campData)
+      })
+
+      const data = await response.json()
+      if (!response.ok) {
+        setError(data.message || "Failed to add camp")
+        setLoading(false)
+        return
+      }
+
+      setCamps([...camps, data.data])
+      setNewCamp({
+        title: "",
+        organizer: "",
+        date: "",
+        time: "",
+        location: "",
+        address: "",
+        services: "",
+        capacity: "",
+        type: "free",
+        applyLink: ""
+      })
+      setShowAddForm(false)
+    } catch (err) {
+      setError(err.message || "Something went wrong. Please try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  const handleDeleteCamp = id => {
-    setCamps(camps.filter(camp => camp.id !== id))
-  }
+  const handleDeleteCamp = (id,title) => {
+    console.log("delete camp id: ",id);
+    setDeletePopup({ open: true, id, title});
 
-  const getStatusColor = status => {
-    switch (status) {
-      case "active":
-        return "bg-green-100 text-green-800"
-      case "completed":
-        return "bg-blue-100 text-blue-800"
-      case "cancelled":
-        return "bg-red-100 text-red-800"
-      default:
-        return "bg-gray-100 text-gray-800"
+  }
+    const confirmDelete = async () => {
+    const { id, title } = deletePopup;
+    try {
+      const response = await fetch(
+        `http://localhost:4000/api/medicalcamp/${id}`,
+        { method: "DELETE" }
+      );
+      if (!response.ok) throw new Error("Failed to delete camp");
+      setCamps(prev => prev.filter(camp => camp._id !== id));
+      // Optionally show toast here
+    } catch (error) {
+      console.error("Error deleting camp:", error);
+      // Optionally show toast here
+    } finally {
+      setDeletePopup({ open: false, id: null, title: "" });
     }
+  };
+
+  // const getStatusColor = status => {
+  //   switch (status) {
+  //     case "active":
+  //       return "bg-green-100 text-green-800"
+  //     case "completed":
+  //       return "bg-blue-100 text-blue-800"
+  //     case "cancelled":
+  //       return "bg-red-100 text-red-800"
+  //     default:
+  //       return "bg-gray-100 text-gray-800"
+  //   }
+  // }
+
+  if (!user) {
+    return <div><Loading/></div>
   }
 
   return (
@@ -330,12 +382,26 @@ const AdminDashboard = () => {
                   </SelectContent>
                 </Select>
               </div>
+              <div>
+                <Label htmlFor="applyLink">Apply Link</Label>
+                <Input
+                  id="applyLink"
+                  value={newCamp.applyLink}
+                  onChange={e =>
+                    setNewCamp({ ...newCamp, applyLink: e.target.value })
+                  }
+                  placeholder="https://example.com/apply"
+                />
+              </div>
               <div className="flex gap-2">
-                <Button onClick={handleAddCamp}>Add Camp</Button>
+                <Button onClick={handleAddCamp} disabled={loading}>
+                  {loading ? "Adding..." : "Add Camp"}
+                </Button>
                 <Button variant="outline" onClick={() => setShowAddForm(false)}>
                   Cancel
                 </Button>
               </div>
+              {error && <p className="text-red-500 mt-2">{error}</p>}
             </CardContent>
           </Card>
         )}
@@ -357,7 +423,6 @@ const AdminDashboard = () => {
                   <TableHead>Date & Time</TableHead>
                   <TableHead>Location</TableHead>
                   <TableHead>Registrations</TableHead>
-                  <TableHead>Status</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -401,11 +466,6 @@ const AdminDashboard = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge className={getStatusColor(camp.status)}>
-                        {camp.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
                       <div className="flex gap-2">
                         <Button size="sm" variant="outline">
                           <Eye className="w-4 h-4" />
@@ -416,7 +476,7 @@ const AdminDashboard = () => {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => handleDeleteCamp(camp.id)}
+                          onClick={() => handleDeleteCamp(camp._id, camp.title)}
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -428,6 +488,13 @@ const AdminDashboard = () => {
             </Table>
           </CardContent>
         </Card>
+        <DeletePopup
+        open={deletePopup.open}
+        title="Delete Camp Details"
+        message={`Are you sure you want to delete ${deletePopup.title}?`}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeletePopup({ open: false, id: null, title: "" })}
+      />
       </main>
 
       <Footer />

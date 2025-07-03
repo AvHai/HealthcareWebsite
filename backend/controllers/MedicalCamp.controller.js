@@ -40,7 +40,12 @@ export const createMedicalCamp = async (req, res) => {
 
 export const getMedicalCamps = async (req, res) => {
     try {
-        const camps = await MedicalCamp.find();
+        const { userId } = req.query;
+        let filter = {};
+        if (userId) {
+            filter.author = userId;
+        }
+        const camps = await MedicalCamp.find(filter);
         return handleSuccess(res, 200, "Medical Camps retrieved successfully", camps);
     } catch (error) {
         console.error("Error retrieving medical camps:", error);
@@ -74,4 +79,22 @@ export const deleteMedicalCamp = async (req, res) => {
         console.error("Error deleting medical camp:", error);
         return handleError(res, 500, "Internal server error");
     }
+}
+
+export const getMedicalCampByUserId = async (req, res) => {
+    try{
+        const {userId} = req.query;
+        let filter = {};
+        if (userId) {
+            filter.author =  userId;
+        }
+        const camps = await MedicalCamp.find(filter);
+        if (!camps || camps.length === 0) {
+            return handleError(res, 404, "No Medical Camps found for this user");
+        }   
+    }catch (error) {
+        console.error("Error retrieving medical camps by user ID:", error);
+        return handleError(res, 500, "Internal server error");
+    }
+    return handleSuccess(res, 200, "Medical Camps retrieved successfully", camps);
 }
