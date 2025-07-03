@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { useSelector } from "react-redux";
 import Index from "./pages/Index"
 import AdminDashboard from "./pages/AdminDashboard"
 import BookCamp from "./pages/BookCamp"
@@ -16,54 +17,63 @@ import PrivateRoute from "./components/PrivateRoute"
 
 const queryClient = new QueryClient()
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signin" element={<SignUpPage />} />
-          {/* Protected routes */}
-          <Route
-            path="/admin"
-            element={
-              <PrivateRoute>
-                <AdminDashboard />
-              </PrivateRoute> 
-            }
-          />
-          <Route
-            path="/book-camp"
-            element={
-              <PrivateRoute>
-                <MedicalCamp />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/community"
-            element={
-              <PrivateRoute>
-                <CommunityPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/chat"
-            element={
-              <PrivateRoute>
-                <ChatbotPage />
-              </PrivateRoute>
-            }
-          />
-          {/* Catch-all */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-)
+const App = () => {
+  // Get user from Redux
+  const user = useSelector(state => state.user.user);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signin" element={<SignUpPage />} />
+            {/* Protected routes */}
+            <Route
+              path="/admin"
+              element={
+                <PrivateRoute>
+                  {user?.role === "hospital" ? (
+                    <AdminDashboard />
+                  ) : (
+                    <NotFound /> // or a custom "Not Authorized" component
+                  )}
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/book-camp"
+              element={
+                <PrivateRoute>
+                  <MedicalCamp />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/community"
+              element={
+                <PrivateRoute>
+                  <CommunityPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/chat"
+              element={
+                <PrivateRoute>
+                  <ChatbotPage />
+                </PrivateRoute>
+              }
+            />
+            {/* Catch-all */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App
